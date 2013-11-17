@@ -33,9 +33,9 @@ module Paymentwall
 		def isSignatureValid()
 			signatureParamsToSign = {}
 
-			if self.getApiType() == self.class::API_VC
+			if self.class::getApiType() == self.class::API_VC
 				signatureParams = Array['uid', 'currency', 'type', 'ref']
-			elsif self.getApiType() == self.class::API_GOODS
+			elsif self.class::getApiType() == self.class::API_GOODS
 				signatureParams = Array['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref']
 			else
 				signatureParams = Array['uid', 'goodsid', 'type', 'ref']
@@ -54,7 +54,7 @@ module Paymentwall
 				signatureParamsToSign = @parameters
 			end
 
-			signatureCalculated = self.calculateSignature(signatureParamsToSign, self.getSecretKey(), @parameters['sign_version'])
+			signatureCalculated = self.calculateSignature(signatureParamsToSign, self.class::getSecretKey(), @parameters['sign_version'])
 			
 			signature = @parameters.include?('sig') ? @parameters['sig'] : nil
 
@@ -77,9 +77,9 @@ module Paymentwall
 			errorsNumber = 0
 			requiredParams = []
 
-			if self.getApiType() == self.class::API_VC
+			if self.class::getApiType() == self.class::API_VC
 				requiredParams = ['uid', 'currency', 'type', 'ref', 'sig']
-			elsif self.getApiType() == self.class::API_GOODS
+			elsif self.class::getApiType() == self.class::API_GOODS
 				requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig']
 			else
 				requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig']
@@ -157,7 +157,7 @@ module Paymentwall
 
 			if productIds.kind_of?(Array) && productIds.length > 0
 				productIds.each do |id|
-					result[] = new Paymentwall::Product(id)
+					result.push(Paymentwall::Product.new(id))
 				end
 			end
 

@@ -11,20 +11,20 @@ module Paymentwall
 		end
 
 		def getDefaultSignatureVersion()
-			return self.getApiType() != self.class::API_CART ? self.class::DEFAULT_SIGNATURE_VERSION : self.class::SIGNATURE_VERSION_2
+			return self.class::getApiType() != self.class::API_CART ? self.class::DEFAULT_SIGNATURE_VERSION : self.class::SIGNATURE_VERSION_2
 		end
 
 		
 		def getUrl()
 			params = {
-				'key' => self.getAppKey(),
+				'key' => self.class::getAppKey(),
 				'uid' => @userId,
 				'widget' => @widgetCode
 			}
 
 			productsNumber = @products.count()
 
-			if self.getApiType() == self.class::API_GOODS
+			if self.class::getApiType() == self.class::API_GOODS
 
 				if @products.kind_of?(Array)
 
@@ -53,7 +53,7 @@ module Paymentwall
 
 				end
 
-			elsif self.getApiType() == self.class::API_CART
+			elsif self.class::getApiType() == self.class::API_CART
 				index = 0
 				@products.each do |product|
 					params['external_ids[' + index.to_s + ']'] = product.getId()
@@ -76,7 +76,7 @@ module Paymentwall
 
 			params = params.merge(@extraParams)
 
-			params['sign'] = self.calculateSignature(params, self.getSecretKey(), signatureVersion)
+			params['sign'] = self.calculateSignature(params, self.class::getSecretKey(), signatureVersion)
 
 			return self.class::BASE_URL + '/' + self.buildController(@widgetCode) + '?' + self.http_build_query(params)
 		end
@@ -101,11 +101,11 @@ module Paymentwall
 		protected
 
 		def buildController(widget, flexibleCall = false)
-			if self.getApiType() == self.class::API_VC
+			if self.class::getApiType() == self.class::API_VC
 				if !/^w|s|mw/.match(widget)
 					return self.class::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY
 				end
-			elsif self.getApiType() == self.class::API_GOODS
+			elsif self.class::getApiType() == self.class::API_GOODS
 				if !flexibleCall
 					if !/^w|s|mw/.match(widget)
 						return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS

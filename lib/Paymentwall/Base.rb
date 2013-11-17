@@ -20,29 +20,29 @@ module Paymentwall
 		@@appKey
 		@@secretKey
 
-		def setApiType(value)
+		def self.setApiType(value)
 			@@apiType = value
 		end
 
-		def getApiType
+		def self.getApiType
 			@@apiType
 		end
 
-		def setAppKey(value)
+		def self.setAppKey(value)
 			@@appKey = value
 			self
 		end
 
-		def getAppKey
+		def self.getAppKey
 			@@appKey
 		end
 
-		def setSecretKey(value)
+		def self.setSecretKey(value)
 			@@secretKey = value
 			self
 		end
 
-		def getSecretKey
+		def self.getSecretKey
 			@@secretKey
 		end
 
