@@ -22,6 +22,7 @@ module Paymentwall
 
 		def self.setApiType(value)
 			@@apiType = value
+			self
 		end
 
 		def self.getApiType
