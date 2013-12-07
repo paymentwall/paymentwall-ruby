@@ -31,6 +31,13 @@ module Paymentwall
 					if productsNumber == 1
 						product = @products[0]
 						if product.kind_of?(Paymentwall::Product)
+
+							postTrialProduct = nil
+							if product.getTrialProduct().kind_of?(Paymentwall::Product)
+ 								postTrialProduct = product
+ 								product = product.getTrialProduct()
+							end
+
 							params['amount'] = product.getAmount()
 							params['currencyCode'] = product.getCurrencyCode()
 							params['ag_name'] = product.getName()
@@ -41,7 +48,18 @@ module Paymentwall
 								params['ag_period_length'] = product.getPeriodLength()
 								params['ag_period_type'] = product.getPeriodType()
 								if product.isRecurring()
+
 									params['ag_recurring'] = product.isRecurring() ? 1 : 0
+
+									if postTrialProduct
+										params['ag_trial'] = 1;
+										params['ag_post_trial_external_id'] = postTrialProduct.getId()
+										params['ag_post_trial_period_length'] = postTrialProduct.getPeriodLength()
+										params['ag_post_trial_period_type'] = postTrialProduct.getPeriodType()
+										params['ag_post_trial_name'] = postTrialProduct.getName()
+										params['post_trial_amount'] = postTrialProduct.getAmount()
+										params['post_trial_currencyCode'] = postTrialProduct.getCurrencyCode()
+					                end
 								end
 							end
 						else
