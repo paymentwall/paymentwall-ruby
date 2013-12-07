@@ -59,7 +59,7 @@ module Paymentwall
 										params['ag_post_trial_name'] = postTrialProduct.getName()
 										params['post_trial_amount'] = postTrialProduct.getAmount()
 										params['post_trial_currencyCode'] = postTrialProduct.getCurrencyCode()
-					                end
+									end
 								end
 							end
 						else
