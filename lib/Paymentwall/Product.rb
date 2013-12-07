@@ -11,7 +11,7 @@ module Paymentwall
 
 		def initialize(productId, amount = 0.0, currencyCode = nil, name = nil, productType = self.class::TYPE_FIXED, periodLength = 0, periodType = nil, recurring = false, trialProduct = nil)
 			@productId = productId
-			@amount = amount
+			@amount = amount.round(2)
 			@currencyCode = currencyCode
 			@name = name
 			@productType = productType
