@@ -17,7 +17,7 @@ module Paymentwall
 			@productType = productType
 			@periodLength = periodLength
 			@periodType = periodType
-			@reccuring = recurring
+			@recurring = recurring
 			if (productType == Paymentwall::Product::TYPE_SUBSCRIPTION && recurring && recurring != 0) 
 				@trialProduct = trialProduct
 			end
@@ -52,7 +52,7 @@ module Paymentwall
 		end
 
 		def isRecurring()
-			@reccuring
+			@recurring
 		end
 
 		def getTrialProduct()
