@@ -25,7 +25,7 @@ Then use a code sample below.
 
 ####Initializing Paymentwall
 <pre><code>require_relative '/path/to/paymentwall-ruby/lib/paymentwall.rb'
-Paymentwall::Base::setApiType(Paymentwall_Base::API_GOODS)
+Paymentwall::Base::setApiType(Paymentwall::Base::API_GOODS)
 Paymentwall::Base::setAppKey('YOUR_APPLICATION_KEY') # available in your Paymentwall merchant area
 Paymentwall::Base::setSecretKey('YOUR_SECRET_KEY') # available in your Paymentwall merchant area
 </code></pre>
