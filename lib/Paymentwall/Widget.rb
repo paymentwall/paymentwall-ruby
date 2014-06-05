@@ -116,29 +116,7 @@ module Paymentwall
 			return '<iframe src="' + self.getUrl() + '" ' + attributesQuery + '></iframe>'
 		end
 
-		protected
-
-		def buildController(widget, flexibleCall = false)
-			if self.class::getApiType() == self.class::API_VC
-				if !/^w|s|mw/.match(widget)
-					return self.class::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY
-				end
-			elsif self.class::getApiType() == self.class::API_GOODS
-				if !flexibleCall
-					if !/^w|s|mw/.match(widget)
-						return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
-					end
-				else
-					return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
-				end
-			else
-				return self.class::CONTROLLER_PAYMENT_CART
-			end
-
-			return ''
-		end
-
-		def calculateSignature(params, secret, version)
+		def self.calculateSignature(params, secret, version)
 			require 'digest'
 			baseString = ''
 
@@ -182,6 +160,28 @@ module Paymentwall
 				end
 
 			end
+		end
+		
+		protected
+
+		def buildController(widget, flexibleCall = false)
+			if self.class::getApiType() == self.class::API_VC
+				if !/^w|s|mw/.match(widget)
+					return self.class::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY
+				end
+			elsif self.class::getApiType() == self.class::API_GOODS
+				if !flexibleCall
+					if !/^w|s|mw/.match(widget)
+						return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
+					end
+				else
+					return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
+				end
+			else
+				return self.class::CONTROLLER_PAYMENT_CART
+			end
+
+			return ''
 		end
 
 		def http_build_query(params)
