@@ -187,7 +187,7 @@ module Paymentwall
 			params = params.clone
 			params.delete('sig')
 
-			sortKeys = (version.to_i == self.class::SIGNATURE_VERSION_2)
+			sortKeys = (version.to_i == self.class::SIGNATURE_VERSION_2 or version.to_i == self.class::SIGNATURE_VERSION_3)
 			keys = sortKeys ? params.keys.sort : params.keys
 
 			baseString = ''
