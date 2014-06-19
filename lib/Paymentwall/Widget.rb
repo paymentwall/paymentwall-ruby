@@ -94,7 +94,7 @@ module Paymentwall
 
 			params = params.merge(@extraParams)
 
-			params['sign'] = self.calculateSignature(params, self.class::getSecretKey(), signatureVersion)
+			params['sign'] = self.class.calculateSignature(params, self.class::getSecretKey(), signatureVersion)
 
 			return self.class::BASE_URL + '/' + self.buildController(@widgetCode) + '?' + self.http_build_query(params)
 		end
@@ -120,7 +120,7 @@ module Paymentwall
 			require 'digest'
 			baseString = ''
 
-			if version == self.class::SIGNATURE_VERSION_1
+			if version == self::SIGNATURE_VERSION_1
 				# TODO: throw exception if no uid parameter is present
 
 				baseString += params.include?('uid') ? params['uid'] : ''
@@ -153,7 +153,7 @@ module Paymentwall
 
 				baseString += secret
 
-				if version == self.class::SIGNATURE_VERSION_3
+				if version == self::SIGNATURE_VERSION_3
 					return Digest::SHA256.hexdigest(baseString)
 				else 
 					return Digest::MD5.hexdigest(baseString)
