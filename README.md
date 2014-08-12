@@ -11,7 +11,9 @@ To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant 
 To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
 
 #Installation
-To install the library in your environment, you can download the [ZIP archive](https://github.com/paymentwall/paymentwall-ruby/archive/master.zip), unzip it and place into your project.
+<code>gem install paymentwall</code>
+
+Alternatively, you can download the [ZIP archive](https://github.com/paymentwall/paymentwall-ruby/archive/master.zip), unzip it and place into your project.
 
 Alternatively, you can run:
 
