@@ -1,199 +1,139 @@
 module Paymentwall
-	class Widget < Paymentwall::Base
-		
-		BASE_URL = 'https://api.paymentwall.com/api'
+  class Widget < Paymentwall::Base
 
-		def initialize(userId, widgetCode, products = [], extraParams = {})
-			@userId = userId
-			@widgetCode = widgetCode
-			@extraParams = extraParams
-			@products = products
-		end
+    BASE_URL = 'https://api.paymentwall.com/api'
 
-		def getDefaultSignatureVersion()
-			return self.class::getApiType() != self.class::API_CART ? self.class::DEFAULT_SIGNATURE_VERSION : self.class::SIGNATURE_VERSION_2
-		end
+    def initialize(userId, widgetCode, products = [], extraParams = {})
+      @user_id      = userId
+      @widget_code  = widgetCode
+      @extra_params = extraParams
+      @products    = products
+    end
 
-		
-		def getUrl()
-			params = {
-				'key' => self.class::getAppKey(),
-				'uid' => @userId,
-				'widget' => @widgetCode
-			}
+    def getUrl()
+      params = {
+          'key'    => self.class.getAppKey(),
+          'uid'    => @user_id,
+          'widget' => @widget_code
+      }
 
-			productsNumber = @products.count()
+      products_number = @products.count()
 
-			if self.class::getApiType() == self.class::API_GOODS
+      if self.class::getApiType() == API_GOODS
 
-				if @products.kind_of?(Array)
+        if @products.kind_of?(Array)
 
-					if productsNumber == 1
-						product = @products[0]
-						if product.kind_of?(Paymentwall::Product)
+          if products_number == 1
+            product = @products[0]
+            if product.kind_of?(Paymentwall::Product)
 
-							postTrialProduct = nil
-							if product.getTrialProduct().kind_of?(Paymentwall::Product)
- 								postTrialProduct = product
- 								product = product.getTrialProduct()
-							end
+              post_trial_product = nil
+              if product.getTrialProduct().kind_of?(Paymentwall::Product)
+                post_trial_product = product
+                product          = product.getTrialProduct()
+              end
 
-							params['amount'] = product.getAmount()
-							params['currencyCode'] = product.getCurrencyCode()
-							params['ag_name'] = product.getName()
-							params['ag_external_id'] = product.getId()
-							params['ag_type'] = product.getType()
+              params['amount']         = product.getAmount()
+              params['currencyCode']   = product.getCurrencyCode()
+              params['ag_name']        = product.getName()
+              params['ag_external_id'] = product.getId()
+              params['ag_type']        = product.getType()
 
-							if product.getType() == Paymentwall::Product::TYPE_SUBSCRIPTION
-								params['ag_period_length'] = product.getPeriodLength()
-								params['ag_period_type'] = product.getPeriodType()
-								if product.isRecurring()
+              if product.getType() == Paymentwall::Product::TYPE_SUBSCRIPTION
+                params['ag_period_length'] = product.getPeriodLength()
+                params['ag_period_type']   = product.getPeriodType()
+                if product.isRecurring()
 
-									params['ag_recurring'] = product.isRecurring() ? 1 : 0
+                  params['ag_recurring'] = product.isRecurring() ? 1 : 0
 
-									if postTrialProduct
-										params['ag_trial'] = 1;
-										params['ag_post_trial_external_id'] = postTrialProduct.getId()
-										params['ag_post_trial_period_length'] = postTrialProduct.getPeriodLength()
-										params['ag_post_trial_period_type'] = postTrialProduct.getPeriodType()
-										params['ag_post_trial_name'] = postTrialProduct.getName()
-										params['post_trial_amount'] = postTrialProduct.getAmount()
-										params['post_trial_currencyCode'] = postTrialProduct.getCurrencyCode()
-									end
-								end
-							end
-						else
-							#TODO: self.appendToErrors('Not an instance of Paymentwall::Product')
-						end
-					else 
-						#TODO: self.appendToErrors('Only 1 product is allowed in flexible widget call')
-					end
+                  if post_trial_product
+                    params['ag_trial'] = 1;
+                    params['ag_post_trial_external_id']   = post_trial_product.getId()
+                    params['ag_post_trial_period_length'] = post_trial_product.getPeriodLength()
+                    params['ag_post_trial_period_type']   = post_trial_product.getPeriodType()
+                    params['ag_post_trial_name']          = post_trial_product.getName()
+                    params['post_trial_amount']           = post_trial_product.getAmount()
+                    params['post_trial_currencyCode']     = post_trial_product.getCurrencyCode()
+                  end
+                end
+              end
+            else
+              #TODO: self.appendToErrors('Not an instance of Paymentwall::Product')
+            end
+          else
+            #TODO: self.appendToErrors('Only 1 product is allowed in flexible widget call')
+          end
 
-				end
+        end
 
-			elsif self.class::getApiType() == self.class::API_CART
-				index = 0
-				@products.each do |product|
-					params['external_ids[' + index.to_s + ']'] = product.getId()
+      elsif self.class.getApiType() == API_CART
+        index = 0
+        @products.each do |product|
+          params['external_ids[' + index.to_s + ']'] = product.getId()
 
-					if product.getAmount() > 0
-						params['prices[' + index.to_s + ']'] = product.getAmount()
-					end
-					if product.getCurrencyCode() != '' && product.getCurrencyCode() != nil
-						params['currencies[' + index.to_s + ']'] = product.getCurrencyCode()
-					end
-					index += 1
-				end
-			end
+          if product.getAmount() > 0
+            params['prices[' + index.to_s + ']'] = product.getAmount()
+          end
+          if product.getCurrencyCode() != '' && product.getCurrencyCode() != nil
+            params['currencies[' + index.to_s + ']'] = product.getCurrencyCode()
+          end
+          index += 1
+        end
+      end
 
-			params['sign_version'] = signatureVersion = self.getDefaultSignatureVersion()
+      params['sign_version'] = signature_version = self.class.getDefaultSignatureVersion()
 
-			if @extraParams.include?('sign_version')
-				signatureVersion = params['sign_version'] = @extraParams['sign_version']
-			end
+      if @extra_params.include?('sign_version')
+        signature_version = params['sign_version'] = @extra_params['sign_version']
+      end
 
-			params = params.merge(@extraParams)
+      params = params.merge(@extra_params)
 
-			params['sign'] = self.class.calculateSignature(params, self.class::getSecretKey(), signatureVersion)
+      params['sign'] = self.class.calculateSignature(params, self.class.getSecretKey(), signature_version)
 
-			return self.class::BASE_URL + '/' + self.buildController(@widgetCode) + '?' + self.http_build_query(params)
-		end
+      "#{BASE_URL}/#{buildController(@widget_code)}?#{http_build_query(params)}"
+    end
 
-		def getHtmlCode(attributes = {})
-			defaultAttributes = {
-				'frameborder' => '0',
-				'width' => '750',
-				'height' => '800'
-			}
+    def getHtmlCode(attributes = {})
+      default_attributes = {
+          'frameborder' => '0',
+          'width'       => '750',
+          'height'      => '800'
+      }
 
-			attributes = defaultAttributes.merge(attributes)
+      attributes = default_attributes.merge(attributes)
 
-			attributesQuery = ''
-			attributes.each do |attr, value|
-				attributesQuery += ' ' + attr.to_s + '="' + value.to_s + '"'
-			end
+      attributes_query = attributes.map{|attr, value| "#{attr.to_s}=\"#{value.to_s}\"" }.join(' ')
 
-			return '<iframe src="' + self.getUrl() + '" ' + attributesQuery + '></iframe>'
-		end
+      '<iframe src="' + getUrl() + '" ' + attributes_query + '></iframe>'
+    end
 
-		def self.calculateSignature(params, secret, version)
-			require 'digest'
-			baseString = ''
+    protected
 
-			if version == self::SIGNATURE_VERSION_1
-				# TODO: throw exception if no uid parameter is present
+    def buildController(widget, flexibleCall = false)
+      if self.class.getApiType() == API_VC
+        unless /^w|s|mw/.match(widget)
+          return CONTROLLER_PAYMENT_VIRTUAL_CURRENCY
+        end
+      elsif self.class.getApiType() == API_GOODS
+        unless flexibleCall && /^w|s|mw/.match(widget)
+            return CONTROLLER_PAYMENT_DIGITAL_GOODS
+        else
+          return CONTROLLER_PAYMENT_DIGITAL_GOODS
+        end
+      else
+        return CONTROLLER_PAYMENT_CART
+      end
 
-				baseString += params.include?('uid') ? params['uid'] : ''
-				baseString += secret
+      ''
+    end
 
-				return Digest::MD5.hexdigest(baseString)
+    def http_build_query(params)
+      params.map{|key,value| "#{key}=#{url_encode(value)}" }.join('&')
+    end
 
-			else
-
-				keys = params.keys.sort
-
-				keys.each do |name| 
-					p = params[name]
-
-					# converting array to hash
-					if p.kind_of?(Array)
-						p = Hash[p.map.with_index { |key, value| [value, key] }]
-					end
-
-					if p.kind_of?(Hash)
-						subKeys = p.keys.sort
-						subKeys.each do |key|
-							value = p[key] 
-							baseString += "#{name}[#{key}]=#{value}"
-						end
-					else
-						baseString += "#{name}=#{p}"
-					end
-				end
-
-				baseString += secret
-
-				if version == self::SIGNATURE_VERSION_3
-					return Digest::SHA256.hexdigest(baseString)
-				else 
-					return Digest::MD5.hexdigest(baseString)
-				end
-
-			end
-		end
-		
-		protected
-
-		def buildController(widget, flexibleCall = false)
-			if self.class::getApiType() == self.class::API_VC
-				if !/^w|s|mw/.match(widget)
-					return self.class::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY
-				end
-			elsif self.class::getApiType() == self.class::API_GOODS
-				if !flexibleCall
-					if !/^w|s|mw/.match(widget)
-						return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
-					end
-				else
-					return self.class::CONTROLLER_PAYMENT_DIGITAL_GOODS
-				end
-			else
-				return self.class::CONTROLLER_PAYMENT_CART
-			end
-
-			return ''
-		end
-
-		def http_build_query(params)
-			result = [];
-			params.each do |key, value|
-				result.push(key + '=' + self.url_encode(value))
-			end
-			return result.join('&')
-		end
-
-		def url_encode(value)
-			URI.escape(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-		end
-	end
+    def url_encode(value)
+      URI.escape(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+    end
+  end
 end
