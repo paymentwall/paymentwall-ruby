@@ -3,7 +3,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'analytics_service-client'
+  spec.name          = 'paymentwall'
   spec.version       = '1.0.0'
   spec.authors       = %w(paymentwall-dev ivan-kovalyov saks mihai-aupeo)
   spec.email         = %w(devsupport@paymentwall.com)
