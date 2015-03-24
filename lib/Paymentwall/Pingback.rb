@@ -51,7 +51,7 @@ module Paymentwall
         signature_params_to_sign = @parameters
       end
 
-      signature_calculated = self.calculateSignature(signature_params_to_sign, self.class.getSecretKey(), @parameters['sign_version'])
+      signature_calculated = self.class.calculateSignature(signature_params_to_sign, self.class.getSecretKey(), @parameters['sign_version'])
 
       signature = @parameters.include?('sig') ? @parameters['sig'] : nil
 
