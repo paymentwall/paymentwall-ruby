@@ -160,5 +160,46 @@ module Paymentwall
       getType() == PINGBACK_TYPE_NEGATIVE
     end
 
+    protected
+
+    def self.calculateSignature(params, secret, version)
+
+      params = params.clone
+      params.delete('sig')
+
+      sort_keys = (version.to_i == SIGNATURE_VERSION_2 or version.to_i == SIGNATURE_VERSION_3)
+      keys = sort_keys ? params.keys.sort : params.keys
+
+      base_string = ''
+
+      keys.each do |name|
+        p = params[name]
+
+        # converting array to hash
+        if p.kind_of?(Array)
+          p = Hash[p.map.with_index { |key, value| [value, key] }]
+        end
+
+        if p.kind_of?(Hash)
+          sub_keys = sort_keys ? p.keys.sort : p.keys;
+          sub_keys.each do |key|
+            value = p[key]
+            base_string += "#{name}[#{key}]=#{value}"
+          end
+        else
+          base_string += "#{name}=#{p}"
+        end
+      end
+
+      base_string += secret
+
+      require 'digest'
+      if version.to_i == SIGNATURE_VERSION_3
+        return Digest::SHA256.hexdigest(base_string)
+      else
+        return Digest::MD5.hexdigest(base_string)
+      end
+    end
+
   end
 end

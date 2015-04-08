@@ -63,45 +63,6 @@ module Paymentwall
       return getApiType() != API_CART ? DEFAULT_SIGNATURE_VERSION : SIGNATURE_VERSION_2
     end
 
-    def self.calculateSignature(params, secret, version)
-      base_string = ''
-
-      if version == SIGNATURE_VERSION_1
-        # TODO: throw exception if no uid parameter is present
-
-        base_string += params.include?('uid') ? params['uid'] : ''
-        base_string += secret
-
-        return Digest::MD5.hexdigest(base_string)
-
-      else
-
-        params.keys.sort.each do |name|
-          p = params[name]
-
-          # converting array to hash
-          if p.kind_of?(Array)
-            p = Hash[p.map.with_index { |key, value| [value, key] }]
-          end
-
-          if p.kind_of?(Hash)
-            p.keys.sort.each{|key| base_string += "#{name}[#{key}]=#{p[key]}"}
-          else
-            base_string += "#{name}=#{p}"
-          end
-        end
-
-        base_string += secret
-
-        if version == SIGNATURE_VERSION_3
-          return Digest::SHA256.hexdigest(base_string)
-        else
-          return Digest::MD5.hexdigest(base_string)
-        end
-
-      end
-    end
-
     def appendToErrors(err)
       @errors ||=[]
       @errors.push(err)
