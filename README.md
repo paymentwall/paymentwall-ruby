@@ -77,7 +77,7 @@ end</code></pre>
 
 ####Initializing Paymentwall
 <pre><code>require_relative '/path/to/paymentwall-ruby/lib/paymentwall.rb'
-Paymentwall::Base::setApiType(Paymentwall_Base::API_VC)
+Paymentwall::Base::setApiType(Paymentwall::Base::API_VC)
 Paymentwall::Base::setAppKey('YOUR_APPLICATION_KEY') # available in your Paymentwall merchant area
 Paymentwall::Base::setSecretKey('YOUR_SECRET_KEY') # available in your Paymentwall merchant area
 </code></pre>
@@ -110,7 +110,7 @@ end</code></pre>
 
 ####Initializing Paymentwall
 <pre><code>require_relative '/path/to/paymentwall-ruby/lib/paymentwall.rb'
-Paymentwall::Base::setApiType(Paymentwall_Base::API_CART)
+Paymentwall::Base::setApiType(Paymentwall::Base::API_CART)
 Paymentwall::Base::setAppKey('YOUR_APPLICATION_KEY') # available in your Paymentwall merchant area
 Paymentwall::Base::setSecretKey('YOUR_SECRET_KEY') # available in your Paymentwall merchant area
 </code></pre>
