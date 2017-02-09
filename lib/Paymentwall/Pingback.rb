@@ -4,6 +4,9 @@ module Paymentwall
 		PINGBACK_TYPE_REGULAR = 0
 		PINGBACK_TYPE_GOODWILL = 1
 		PINGBACK_TYPE_NEGATIVE = 2
+		PINGBACK_TYPE_RISK_UNDER_REVIEW = 200
+	    PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED = 201
+	    PINGBACK_TYPE_RISK_REVIEWED_DECLINED = 202
 		
 		def initialize(parameters = {}, ipAddress = '')
 			@parameters = parameters
@@ -107,7 +110,10 @@ module Paymentwall
 			pingbackTypes = [
 				self.class::PINGBACK_TYPE_REGULAR,
 				self.class::PINGBACK_TYPE_GOODWILL,
-				self.class::PINGBACK_TYPE_NEGATIVE
+				self.class::PINGBACK_TYPE_NEGATIVE,
+				self.class::PINGBACK_TYPE_RISK_UNDER_REVIEW,
+				self.class::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED,
+				self.class::PINGBACK_TYPE_RISK_REVIEWED_DECLINED
 			]
 
 			if @parameters.include?('type')
@@ -173,11 +179,18 @@ module Paymentwall
 		end
 
 		def isDeliverable()
-			self.getType() == self.class::PINGBACK_TYPE_REGULAR || self.getType() == self.class::PINGBACK_TYPE_GOODWILL
+			self.getType() == self.class::PINGBACK_TYPE_REGULAR || 
+			self.getType() == self.class::PINGBACK_TYPE_GOODWILL ||
+			self.getType() == self.class::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
 		end
 
 		def isCancelable()
-			self.getType() == self.class::PINGBACK_TYPE_NEGATIVE
+			self.getType() == self.class::PINGBACK_TYPE_NEGATIVE ||
+			self.getType() == self.class::PINGBACK_TYPE_RISK_REVIEWED_DECLINED
+		end
+
+		def isUnderReview()
+			self.getType() == self.class::PINGBACK_TYPE_RISK_UNDER_REVIEW
 		end
 
 		protected
