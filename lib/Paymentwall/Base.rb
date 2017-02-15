@@ -26,7 +26,7 @@ module Paymentwall
 		end
 
 		def self.getApiType
-			@@apiType
+			@@apiType.to_i
 		end
 
 		def self.setAppKey(value)
@@ -35,7 +35,7 @@ module Paymentwall
 		end
 
 		def self.getAppKey
-			@@appKey
+			@@appKey.to_s
 		end
 
 		def self.setSecretKey(value)
@@ -44,7 +44,7 @@ module Paymentwall
 		end
 
 		def self.getSecretKey
-			@@secretKey
+			@@secretKey.to_s
 		end
 
 		def getErrors

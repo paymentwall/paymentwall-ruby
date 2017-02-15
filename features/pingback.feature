@@ -3,7 +3,6 @@ Feature: Pingback
   As a developer
   I want to be able to validate Paymentwall pingbacks
 
-
 Scenario: check Digital Goods pingback signature v2 with correct signature and correct IP
   Given Public key "c22f895840bf2391f67a40da64bfed26"
   And Secret key "a7408723eaf4bfa2e3ac49b3cb695046"
@@ -20,7 +19,6 @@ Scenario: check Digital Goods pingback signature v2 with correct signature and c
   And Pingback method "isDeliverable" should return "true"
   And Pingback method "isCancelable" should return "false"
 
-
 Scenario: check Digital Goods pingback signature v2 with correct signature and wrong IP
   Given Public key "c22f895840bf2391f67a40da64bfed26"
   And Secret key "a7408723eaf4bfa2e3ac49b3cb695046"
@@ -30,7 +28,6 @@ Scenario: check Digital Goods pingback signature v2 with correct signature and w
   When Pingback is constructed
   Then Pingback validation result should be "false"
 
-
 Scenario: check Digital Goods pingback signature v2 with wrong signature and correct IP
   Given Public key "c22f895840bf2391f67a40da64bfed26"
   And Secret key "a7408723eaf4bfa2e3ac49b3cb695046"
@@ -39,7 +36,6 @@ Scenario: check Digital Goods pingback signature v2 with wrong signature and cor
   And Pingback IP address "174.36.92.186"
   When Pingback is constructed
   Then Pingback validation result should be "false"
-
 
 Scenario: check Digital Goods negative pingback signature v3 with correct signature and correct IP
   Given Public key "c22f895840bf2391f67a40da64bfed26"
@@ -54,7 +50,6 @@ Scenario: check Digital Goods negative pingback signature v3 with correct signat
   And Pingback method "isDeliverable" should return "false"
   And Pingback method "isCancelable" should return "true"
 
-
 Scenario: check Digital Goods negative pingback signature v1 with correct signature
   Given Public key "c22f895840bf2391f67a40da64bfed26"
   And Secret key "a7408723eaf4bfa2e3ac49b3cb695046"
@@ -63,7 +58,6 @@ Scenario: check Digital Goods negative pingback signature v1 with correct signat
   And Pingback IP address "174.36.92.186"
   When Pingback is constructed
   Then Pingback validation result should be "true"
-
 
 Scenario: check Virtual Currency pingback signature v1 with correct signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
@@ -74,7 +68,6 @@ Scenario: check Virtual Currency pingback signature v1 with correct signature
   When Pingback is constructed
   Then Pingback validation result should be "true"
   And Pingback method "getVirtualCurrencyAmount" should return "1000"
-
 
 Scenario: check Virtual Currency pingback signature v1 with wrong signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
@@ -95,7 +88,6 @@ Scenario: check Virtual Currency pingback signature v2 with correct signature
   Then Pingback validation result should be "true"
   And Pingback method "getVirtualCurrencyAmount" should return "1000"
 
-
 Scenario: check Virtual Currency pingback signature v2 with wrong signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
   And Secret key "6274def95b105f1c92d341a8d3bc2e77"
@@ -104,7 +96,6 @@ Scenario: check Virtual Currency pingback signature v2 with wrong signature
   And Pingback IP address "174.36.92.186"
   When Pingback is constructed
   Then Pingback validation result should be "false"
-
 
 Scenario: check Virtual Currency pingback signature v3 with correct signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
@@ -115,7 +106,6 @@ Scenario: check Virtual Currency pingback signature v3 with correct signature
   When Pingback is constructed
   Then Pingback validation result should be "true"
   And Pingback method "getVirtualCurrencyAmount" should return "1000"
-
 
 Scenario: check Virtual Currency pingback signature v3 with wrong signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"

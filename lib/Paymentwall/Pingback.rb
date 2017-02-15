@@ -36,9 +36,9 @@ module Paymentwall
 		def isSignatureValid()
 			signatureParamsToSign = {}
 
-			if self.class::getApiType().to_i == self.class::API_VC
+			if self.class::getApiType() == self.class::API_VC
 				signatureParams = Array['uid', 'currency', 'type', 'ref']
-			elsif self.class::getApiType().to_i == self.class::API_GOODS
+			elsif self.class::getApiType() == self.class::API_GOODS
 				signatureParams = Array['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref']
 			else
 				signatureParams = Array['uid', 'goodsid', 'type', 'ref']
@@ -78,9 +78,9 @@ module Paymentwall
 			errorsNumber = 0
 			requiredParams = []
 
-			if self.class::getApiType().to_i == self.class::API_VC
+			if self.class::getApiType() == self.class::API_VC
 				requiredParams = ['uid', 'currency', 'type', 'ref', 'sig']
-			elsif self.class::getApiType().to_i == self.class::API_GOODS
+			elsif self.class::getApiType() == self.class::API_GOODS
 				requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig']
 			else
 				requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig']
