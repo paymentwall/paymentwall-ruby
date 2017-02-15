@@ -1,8 +1,6 @@
 Given(/^Pingback GET parameters "([^"]*)"$/) do |arg1|
-
   @queryData = URI::QueryParams.parse(arg1)
- 
-end
+ end
 
 Given(/^Pingback IP address "([^"]*)"$/) do |arg1|
   @ipAddress = arg1
