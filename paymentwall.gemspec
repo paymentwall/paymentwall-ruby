@@ -8,4 +8,9 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob("lib/**/*") + %w(LICENSE README.md Rakefile)
   s.homepage    = 'http://www.paymentwall.com'
   s.license     = 'MIT'
+
+  s.add_development_dependency('cucumber')
+  s.add_development_dependency('hpricot')
+  s.add_development_dependency('minitest')
+  s.add_development_dependency('uri-query_params')
 end

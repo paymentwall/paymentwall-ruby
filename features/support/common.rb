@@ -2,6 +2,7 @@ require_relative '../../lib/paymentwall.rb'
 require 'cgi'
 require 'json'
 require 'uri/query_params'
+require 'minitest'
 
 Given(/^Public key "([^"]*)"$/) do |arg1|
 	Paymentwall::Base::setAppKey(arg1) # available in your Paymentwall merchant area
