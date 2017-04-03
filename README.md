@@ -50,7 +50,7 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 ```rb
 widget = Paymentwall::Widget.new(
   'user40012',   # id of the end-user who's making the payment
-  'p1_1',        # widget code, e.g. p1; can be picked inside of your merchant account
+  'fp',        # widget code, e.g. p1; can be picked inside of your merchant account
   [              # product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
     Paymentwall::Product.new(
       'product301',                            # id of the product in your system
