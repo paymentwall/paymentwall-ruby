@@ -169,3 +169,19 @@ else
   puts pingback.getErrorSummary()
 end
 ```
++# Testing this gem
+ +
+ +To run this gem's test suite locally, follow the steps below.
+ +
+ +```
+ +# Clone the repository
+ +git clone git@github.com:paymentwall/paymentwall-ruby.git
+ +
+ +# Install dependencies with Bundler
+ +cd paymentwall-ruby
+ +bundle install
+ +
+ +# Run tests
+ +rake
+ +```
+
