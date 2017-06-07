@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'paymentwall'
-  s.version     = '1.0.0'
+  s.version     = '1.1.1'
   s.summary     = "Paymentwall gem"
   s.description = "Paymentwall is the leading digital payments platform for globally monetizing digital goods and services."
   s.authors     = ["Heitor Dolinski"]
