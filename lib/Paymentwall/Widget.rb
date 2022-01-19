@@ -193,7 +193,7 @@ module Paymentwall
 		end
 
 		def url_encode(value)
-			URI.escape(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+			ERB::Util.url_encode(value.to_s)
 		end
 	end
 end
